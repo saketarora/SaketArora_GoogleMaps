@@ -29,9 +29,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:onClick="trackMyLocation"
             android:layout_weight="0.33"
+            android:onClick="trackMyLocation"
             android:text="Track"></Button>
+        <Button
+            android:id="@+id/button_clear"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:onClick="clearMarker"
+            android:layout_weight="0.33"
+            android:text="Clear"></Button>
     </LinearLayout>
 
     <!-- Layout for the Search -->

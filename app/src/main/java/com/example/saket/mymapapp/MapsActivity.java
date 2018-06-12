@@ -76,25 +76,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(SanDiego).title("Born here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(SanDiego));
 
-/*
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d("MyMapsApp", "Failed Fine Permission Check");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
         }
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d("MyMapsApp", "Failed Coarse Permission Check");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
-
         }
         if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
-            mMap.setMyLocationEnabled(true);
+
         }
 
-*/
         locationSearch =  findViewById(R.id.editText_addr);
         gotMyLocationOneTime = false;
         getLocation();
+    }
+    public void clearMarker(View v){
+        mMap.clear();
     }
 
     public void dropMarker(String provider) {
@@ -102,33 +101,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(locationManager != null){
             if((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)))
             {
-                 return;
+                return;
             }
             myLocation = locationManager.getLastKnownLocation(provider);}
         LatLng userLocation = null;
         if(myLocation == null) Log.d("dropMarker", "myLocation == null");
         else
-             userLocation = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-             CameraUpdate update = CameraUpdateFactory.newLatLngZoom(userLocation, MY_LOC_ZOOM_FACTORY);
-             if (provider == LocationManager.GPS_PROVIDER) {
-                 //          add circle for the marker with 2 outer rings
+            userLocation = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(userLocation, MY_LOC_ZOOM_FACTORY);
+        if (provider == LocationManager.GPS_PROVIDER) {
+            //          add circle for the marker with 2 outer rings
 
-                 Circle circle = mMap.addCircle(new CircleOptions()
-                        .center(userLocation)
-                        .radius(1)
-                        .strokeColor(Color.RED)
-                        .strokeWidth(2)
-                        .fillColor(Color.RED));
-                 //      else add circle for the marker with 2 outer rings (blue)
-             }
-             else{
-                 Circle circle = mMap.addCircle(new CircleOptions()
-                         .center(userLocation)
-                         .radius(1)
-                         .strokeColor(Color.BLUE)
-                         .strokeWidth(2)
-                         .fillColor(Color.BLUE));
-             }
+            Circle circle = mMap.addCircle(new CircleOptions()
+                    .center(userLocation)
+                    .radius(1)
+                    .strokeColor(Color.RED)
+                    .strokeWidth(2)
+                    .fillColor(Color.RED));
+            //      else add circle for the marker with 2 outer rings (blue)
+        }
+        else{
+            Circle circle = mMap.addCircle(new CircleOptions()
+                    .center(userLocation)
+                    .radius(1)
+                    .strokeColor(Color.BLUE)
+                    .strokeWidth(2)
+                    .fillColor(Color.BLUE));
+        }
         mMap.animateCamera(update);
     }
 
@@ -202,7 +201,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Address address = addressList.get(i);
                     LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());
 
-                    mMap.addMarker(new MarkerOptions().position(latlng).title(i + ": " + address.getSubThoroughfare() + address.getSubThoroughfare()));
+                    mMap.addMarker(new MarkerOptions().position(latlng).title(address.getAddressLine(i) + address.getSubThoroughfare()));
                 }
             }
         }
@@ -295,25 +294,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     break;
                 case LocationProvider.TEMPORARILY_UNAVAILABLE:
 
-                        if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            return;
-                        }
-                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_FINE_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListenerNetwork);
+                    if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_FINE_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListenerNetwork);
 
 
 
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_FINE_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListenerGPS);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_FINE_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListenerGPS);
 
-                        break;
+                    break;
                 default:
 
-                        if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            return;
-                        }
-                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_FINE_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListenerNetwork);
+                    if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_FINE_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListenerNetwork);
 
 
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_FINE_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListenerGPS);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_FINE_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListenerGPS);
 
             }
         }
